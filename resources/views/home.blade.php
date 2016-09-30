@@ -15,6 +15,7 @@
         </div>
     </div>
 
+    @include("includes.message")
     <section class="row new-post">
         <div class="col-md-6 col-md-offset-3">
             <header><h3>Place a post!</h3></header>
@@ -23,24 +24,27 @@
                     <textarea class="form-control" name="body" id="new-post" rows="5" placeholder="New post"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Create post</button>
+                <input type="hidden" value="{{ Session::token() }}" name="_token">
             {!! Form::close() !!}
         </div>
     </section>
     <section class="row posts">
         <div class="col-md-6 col-md-offset-3">
             <header><h3>Other posts</h3></header>
-            <article class="post">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A eligendi error expedita harum ut? Assumenda deleniti deserunt, dicta dolorum eius fuga impedit in ipsum obcaecati, pariatur porro quisquam quod repellat!</p>
-                <div class="info">
-                    Posted by "naam" on "datum"
-                </div>
-                <div class="interaction">
-                    <a href="#">Like</a>
-                    <a href="#">Dislike</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
-                </div>
-            </article>
+            @foreach($posts as $post)
+                <article class="post">
+                    <p>{{ $post->body }}</p>
+                    <div class="info">
+                        Posted by {{ $post->user->name }} on {{ $post->created_at }}
+                    </div>
+                    <div class="interaction">
+                        <a href="#">Like</a>
+                        <a href="#">Dislike</a>
+                        <a href="#">Edit</a>
+                        <a href="#">Delete</a>
+                    </div>
+                </article>
+            @endforeach
         </div>
     </section>
 @endsection

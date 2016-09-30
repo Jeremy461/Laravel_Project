@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
+
+
+
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -16,7 +19,7 @@ class PostController extends Controller
         ]);
         $post = new Post();
         $post->body = $request['body'];
-        $message = 'There was an error';
+        $message = 'There was an error, post is not created';
         if ($request->user()->posts()->save($post)) {
             $message = 'Post successfully created!';
         }
@@ -25,6 +28,7 @@ class PostController extends Controller
 
     public function getDashboard()
     {
-        return view('home');
+        $posts = Post::all();
+        return view('home', ['posts' => $posts]);
     }
 }
