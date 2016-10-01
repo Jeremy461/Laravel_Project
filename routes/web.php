@@ -38,3 +38,9 @@ Route::get('/dashboard', [
     'as' => 'dashboard',
     'middleware' => 'auth'
 ]);
+
+Route::get('/delete-post/{post_id}', [
+    'uses' => 'PostController@deletePost',
+    'as' => 'delete.post',
+    'middleware' => 'auth'
+]);
