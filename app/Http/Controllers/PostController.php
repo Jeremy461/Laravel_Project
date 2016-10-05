@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Like;
 use App\Post;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -40,5 +40,19 @@ class PostController extends Controller
         }
         $post->delete();
         return redirect()->back()->with(['message', 'Post successfully deleted!']);
+    }
+
+    public function addLike($post_id)
+    {
+        $post = Post::where('id', $post_id)->first();
+        DB::table('posts')->where('id', '=', $post->id)->increment('likes');
+        return redirect()->back();
+    }
+
+    public function addDislike($post_id)
+    {
+        $post = Post::where('id', $post_id)->first();
+        DB::table('posts')->where('id', '=', $post->id)->decrement('likes');
+        return redirect()->back();
     }
 }

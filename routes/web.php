@@ -64,3 +64,13 @@ Route::get('/user/{userid}', [
     'uses' => 'ProfileController@getProfile',
     'as' => 'getProfile'
 ]);
+
+Route::get('/like/{post_id}', [
+    'uses' => 'PostController@addLike',
+    'as' => 'like'
+]);
+
+Route::get('/dislike/{post_id}', [
+    'uses' => 'PostController@addDislike',
+    'as' => 'dislike'
+]);

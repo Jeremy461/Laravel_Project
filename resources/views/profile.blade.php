@@ -22,18 +22,9 @@
                     @if($post->user->id == $user->id)
                     <p>{{ $post->body }}</p>
                     <div class="info">
-                        Posted by {{ $post->user->name }} on {{ $post->created_at }}
+                        Posted on {{ $post->created_at }}
                     </div>
-                    <div class="interaction">
-                        @if(Auth::user() != $post->user)
-                            <a href="#">Like</a> |
-                            <a href="#">Dislike</a>
-                        @endif
-                        @if(Auth::user() == $post->user)
-                            <a href="#">Edit</a> |
-                            <a href="{{ route('delete.post', ['post_id' => $post->id]) }}">Delete</a>
-                        @endif
-                    </div>
+                    @include("includes.interaction")
                     @endif
                 </article>
             @endforeach
