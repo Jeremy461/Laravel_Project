@@ -44,3 +44,23 @@ Route::get('/delete-post/{post_id}', [
     'as' => 'delete.post',
     'middleware' => 'auth'
 ]);
+
+Route::get('/editprofile', [
+    'uses' => 'ProfileController@editProfile',
+    'as' => 'profile'
+]);
+
+Route::post('/updateprofile', [
+    'uses' => 'ProfileController@updateProfile',
+    'as' => 'update.profile'
+]);
+
+Route::get('/profileimage/{filename}', [
+    'uses' => 'ProfileController@getProfileImage',
+    'as' => 'profile.image'
+]);
+
+Route::get('/user/{userid}', [
+    'uses' => 'ProfileController@getProfile',
+    'as' => 'getProfile'
+]);
