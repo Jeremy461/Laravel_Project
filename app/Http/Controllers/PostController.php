@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
-
-
-
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -45,8 +42,15 @@ class PostController extends Controller
     public function addLike($post_id)
     {
         $post = Post::where('id', $post_id)->first();
-        DB::table('posts')->where('id', '=', $post->id)->increment('likes');
-        return redirect()->back();
+
+        if(DB::table('likes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0){
+            return redirect()->route('dashboard')->with(['message' => 'You already liked this post!']);
+        } else {
+            DB::table('likes')->insert(
+                ['user_id' => $post->user->id, 'post_id' => $post_id]
+            );
+            return redirect()->route('dashboard')->with(['message' => 'Successfully liked this post!']);
+        }
     }
 
     public function addDislike($post_id)

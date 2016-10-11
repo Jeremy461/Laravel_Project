@@ -39,7 +39,7 @@ Route::get('/dashboard', [
     'middleware' => 'auth'
 ]);
 
-Route::get('/delete-post/{post_id}', [
+Route::post('/delete-post/{post_id}', [
     'uses' => 'PostController@deletePost',
     'as' => 'delete.post',
     'middleware' => 'auth'
@@ -47,7 +47,8 @@ Route::get('/delete-post/{post_id}', [
 
 Route::get('/editprofile', [
     'uses' => 'ProfileController@editProfile',
-    'as' => 'profile'
+    'as' => 'profile',
+    'middleware' => 'auth'
 ]);
 
 Route::post('/updateprofile', [
@@ -65,12 +66,12 @@ Route::get('/user/{userid}', [
     'as' => 'getProfile'
 ]);
 
-Route::get('/like/{post_id}', [
+Route::post('/like/{post_id}', [
     'uses' => 'PostController@addLike',
     'as' => 'like'
 ]);
 
-Route::get('/dislike/{post_id}', [
+Route::post('/dislike/{post_id}', [
     'uses' => 'PostController@addDislike',
     'as' => 'dislike'
 ]);
