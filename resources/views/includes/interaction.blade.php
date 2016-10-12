@@ -12,5 +12,5 @@
             <button type="submit" class="button">Delete</button>
             {!! Form::close() !!}
     @endif
-    <p>{{ DB::table('likes')->where('post_id', $post->id)->count() }} like(s)</p>
+    <p>{{ DB::table('likes')->where('post_id', $post->id)->count() }} like(s) | {{ DB::table('dislikes')->where('post_id', $post->id)->count()}} dislike(s)</p>
 </div>

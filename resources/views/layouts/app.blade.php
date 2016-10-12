@@ -45,7 +45,22 @@
                 <ul class="nav navbar-nav">
                     &nbsp;
                 </ul>
+                <form class="search" role="form" method="POST" action="{{route('search.user')}}">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input id="search_user" type="text" class="form-control" name="search_user" placeholder="Search user">
+                        <input type="hidden" value="{{ Session::token() }}" name="_token">
+                    </div>
+                </div>
+                </form>
 
+                <form class="search" role="form" method="POST" action="#">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <input id="search_song" type="text" class="form-control" name="search_song" placeholder="Search song">
+                        </div>
+                    </div>
+                </form>
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->

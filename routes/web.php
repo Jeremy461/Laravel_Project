@@ -75,3 +75,8 @@ Route::post('/dislike/{post_id}', [
     'uses' => 'PostController@addDislike',
     'as' => 'dislike'
 ]);
+
+Route::post('/search_user', [
+    'uses' => 'SearchController@searchUser',
+    'as' => 'search.user'
+]);

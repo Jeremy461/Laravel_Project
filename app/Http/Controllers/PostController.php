@@ -43,20 +43,35 @@ class PostController extends Controller
     {
         $post = Post::where('id', $post_id)->first();
 
-        if(DB::table('likes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0){
-            return redirect()->route('dashboard')->with(['message' => 'You already liked this post!']);
+        if (DB::table('likes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0) {
+            return redirect()->route('dashboard')->with(['message' => 'You have already liked this post!']);
         } else {
-            DB::table('likes')->insert(
-                ['user_id' => $post->user->id, 'post_id' => $post_id]
-            );
-            return redirect()->route('dashboard')->with(['message' => 'Successfully liked this post!']);
+            if (DB::table('dislikes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0) {
+                DB::table('dislikes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->delete();
+                DB::table('likes')->insert(['user_id' => $post->user->id, 'post_id' => $post_id]);
+                return redirect()->route('dashboard')->with(['message' => 'Successfully liked this post!']);
+            } else {
+                DB::table('likes')->insert(['user_id' => $post->user->id, 'post_id' => $post_id]);
+                return redirect()->route('dashboard')->with(['message' => 'Successfully liked this post!']);
+            }
         }
     }
 
     public function addDislike($post_id)
     {
         $post = Post::where('id', $post_id)->first();
-        DB::table('posts')->where('id', '=', $post->id)->decrement('likes');
-        return redirect()->back();
+
+        if (DB::table('dislikes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0) {
+            return redirect()->route('dashboard')->with(['message' => 'You have already disliked this post!']);
+        } else {
+                if (DB::table('likes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->count() > 0) {
+                    DB::table('likes')->where([['user_id', '=', $post->user->id], ['post_id', '=', $post_id]])->delete();
+                    DB::table('dislikes')->insert(['user_id' => $post->user->id, 'post_id' => $post_id]);
+                    return redirect()->route('dashboard')->with(['message' => 'Successfully disliked this post!']);
+                } else {
+                    DB::table('dislikes')->insert(['user_id' => $post->user->id, 'post_id' => $post_id]);
+                    return redirect()->route('dashboard')->with(['message' => 'Successfully disliked this post!']);
+                }
+        }
     }
 }
