@@ -33,6 +33,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
+    public function songs()
+    {
+        return $this->hasMany('App\Song');
+    }
+
     public function likes()
     {
         return $this->hasMany('App\Like');

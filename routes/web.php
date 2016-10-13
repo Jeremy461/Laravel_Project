@@ -80,3 +80,13 @@ Route::post('/search_user', [
     'uses' => 'SearchController@searchUser',
     'as' => 'search.user'
 ]);
+
+Route::post('/upload', [
+    'uses' => 'SongController@upload',
+    'as' => 'upload.song'
+]);
+
+Route::get('song/{filename}', [
+    'uses' => 'SongController@getSong',
+    'as' => 'get.song'
+]);
