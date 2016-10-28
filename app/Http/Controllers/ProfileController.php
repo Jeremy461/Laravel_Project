@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Song;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -40,11 +41,11 @@ class ProfileController extends Controller
     }
 
     public function getProfile($userid){
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $songs = Song::orderBy('created_at', 'desc')->get();
         $user = User::where('id', $userid)->first();
         if(!$user){
             abort(404);
         }
-        return view('profile', ['posts' => $posts])->with('user', $user);
+        return view('profile', ['songs' => $songs])->with('user', $user);
     }
 }

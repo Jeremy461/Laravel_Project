@@ -17,7 +17,21 @@ class SearchController extends Controller
 
         $input = $request['search_user'];
 
+        $result_type = 'user';
         $result = DB::table('users')->where('name', 'like', '%' . $input . '%')->get();
-        return view('search_results', ['results' => $result]);
+        return view('search_results', ['results' => $result, 'result_type' => $result_type ]);
+    }
+
+    public function searchSong(Request $request)
+    {
+        $this->validate($request, [
+            'search_song' => 'required'
+        ]);
+
+        $input = $request['search_song'];
+
+        $result_type = 'song';
+        $result = DB::table('songs')->where('title', 'like', '%' . $input . '%')->orwhere('genre', 'like', '%' . $input . '%')->get();
+        return view('search_results', ['results' => $result, 'result_type' => $result_type ]);
     }
 }

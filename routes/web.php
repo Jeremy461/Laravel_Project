@@ -34,14 +34,14 @@ Route::post('users/createpost', [
 ]);
 
 Route::get('/dashboard', [
-    'uses' => 'PostController@getDashboard',
+    'uses' => 'SongController@getDashboard',
     'as' => 'dashboard',
     'middleware' => 'auth'
 ]);
 
-Route::post('/delete-post/{post_id}', [
-    'uses' => 'PostController@deletePost',
-    'as' => 'delete.post',
+Route::post('/delete-song/{song_id}', [
+    'uses' => 'SongController@deleteSong',
+    'as' => 'delete.song',
     'middleware' => 'auth'
 ]);
 
@@ -67,12 +67,12 @@ Route::get('/user/{userid}', [
 ]);
 
 Route::post('/like/{post_id}', [
-    'uses' => 'PostController@addLike',
+    'uses' => 'SongController@addLike',
     'as' => 'like'
 ]);
 
 Route::post('/dislike/{post_id}', [
-    'uses' => 'PostController@addDislike',
+    'uses' => 'SongController@addDislike',
     'as' => 'dislike'
 ]);
 
@@ -81,12 +81,29 @@ Route::post('/search_user', [
     'as' => 'search.user'
 ]);
 
+Route::post('/search_song', [
+    'uses' => 'SearchController@searchSong',
+    'as' => 'search.song'
+]);
+
 Route::post('/upload', [
     'uses' => 'SongController@upload',
     'as' => 'upload.song'
 ]);
 
-Route::get('song/{filename}', [
+Route::get('song/{path}', [
     'uses' => 'SongController@getSong',
     'as' => 'get.song'
+]);
+
+Route::get('/users', [
+    'uses' => 'AdminController@getUsers',
+    'as' => 'users',
+    'middleware' => 'auth'
+]);
+
+Route::post('/users/delete{user_id}', [
+    'uses' => 'AdminController@deleteUser',
+    'as' => 'delete.user',
+    'middleware' => 'auth'
 ]);

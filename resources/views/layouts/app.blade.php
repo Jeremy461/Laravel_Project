@@ -54,10 +54,11 @@
                 </div>
                 </form>
 
-                <form class="search" role="form" method="POST" action="#">
+                <form class="search" role="form" method="POST" action="{{ route('search.song') }}">
                     <div class="form-group">
                         <div class="col-md-6">
                             <input id="search_song" type="text" class="form-control" name="search_song" placeholder="Search song">
+                            <input type="hidden" value="{{ Session::token() }}" name="_token">
                         </div>
                     </div>
                 </form>
@@ -68,8 +69,12 @@
                         <li><a href="{{ route('dashboard') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
+                        @if (Auth::user()->role == 0)
                         <li><a href="{{ route('getProfile', ['userid' => Auth::user()->id]) }}">Profile</a></li>
                         <li><a href="{{ route('profile') }}">Edit Profile</a></li>
+                        @else
+                            <li><a href="{{ route('users') }}">Users</a></li>
+                        @endif
                         <li><a href="{{ url('logout') }}"
                                onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">

@@ -13,22 +13,22 @@
             </div>
         </section>
     @endif
-    @include("includes.message")
     <section class="row posts">
         <div class="col-md-6 col-md-offset-3">
             <header><h3>{{ $user->name }}'s posts</h3></header>
-            @foreach($posts as $post)
+            @foreach($songs as $song)
+                @if($song->user_id == $user->id)
                 <article class="post">
-                    @if($post->user->id == $user->id)
-                    <p>{{ $post->body }}</p>
-                    <div class="info">
-                        Posted on {{ $post->created_at }}
-                    </div>
+                    <p>Title: {{ $song->title }}</p>
+                    <p>Genre: {{ $song->genre }}</p>
+                    <audio controls>
+                        <source src="{{ route('get.song', ['path' => $song->path]) }}" type="audio/mpeg">
+                    </audio><br>
+                    Posted by <a href="{{ route('getProfile', ['userid' => $song->user->id]) }}">{{ $song->user->name }}</a>
                     @include("includes.interaction")
-                    @endif
                 </article>
+                @endif
             @endforeach
         </div>
     </section>
-    <?php echo($user->name . '-' . $user->id . '.mp3') ?>
 @endsection
