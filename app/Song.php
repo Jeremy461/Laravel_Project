@@ -10,4 +10,9 @@ class Song extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function genre()
+    {
+        return $this->belongsTo('App\Genre');
+    }
 }

@@ -17,27 +17,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', [
+    'as' => 'dashboard',
+    'uses' => 'HomeController@index'
+]);
 
-Auth::routes();
+//Route::get('/home', 'HomeController@index');
 
-Route::get('/home', 'HomeController@index');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
-
-Route::post('users/createpost', [
+Route::post('/createpost/{song_id}', [
     'as' => 'create.post',
     'uses' => 'PostController@create',
     'middleware' => 'auth'
 ]);
 
-Route::get('/dashboard', [
-    'uses' => 'SongController@getDashboard',
-    'as' => 'dashboard',
-    'middleware' => 'auth'
-]);
+//Route::get('/dashboard', [
+//    'uses' => 'SongController@getDashboard',
+//    'as' => 'dashboard'
+//]);
 
 Route::post('/delete-song/{song_id}', [
     'uses' => 'SongController@deleteSong',
@@ -107,3 +103,4 @@ Route::post('/users/delete{user_id}', [
     'as' => 'delete.user',
     'middleware' => 'auth'
 ]);
+

@@ -20,7 +20,6 @@
                 @if($song->user_id == $user->id)
                 <article class="post">
                     <p>Title: {{ $song->title }}</p>
-                    <p>Genre: {{ $song->genre }}</p>
                     <audio controls>
                         <source src="{{ route('get.song', ['path' => $song->path]) }}" type="audio/mpeg">
                     </audio><br>

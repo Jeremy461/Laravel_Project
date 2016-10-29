@@ -41,11 +41,12 @@ class ProfileController extends Controller
     }
 
     public function getProfile($userid){
+        $posts = Post::orderBy('created_at', 'desc')->get();
         $songs = Song::orderBy('created_at', 'desc')->get();
         $user = User::where('id', $userid)->first();
         if(!$user){
             abort(404);
         }
-        return view('profile', ['songs' => $songs])->with('user', $user);
+        return view('profile', ['songs' => $songs, 'posts' => $posts])->with('user', $user);
     }
 }

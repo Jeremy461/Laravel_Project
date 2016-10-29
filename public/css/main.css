@@ -36,3 +36,14 @@
 audio {
     border: 1px solid black;
 }
+
+.showItem {
+    display: list-item;
+}
+.hideItem {
+    display: none;
+}
+
+.title.a#link {
+    text-decoration: none;
+}

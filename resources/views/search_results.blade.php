@@ -14,16 +14,23 @@
                 @endforeach
             @endif
             @if($result_type == 'song')
-                @foreach($results as $song)
-                    <article class="post">
-                        <p>Title: {{ $song->title }}</p>
-                        <p>Genre: {{ $song->genre }}</p>
-                        <audio controls>
-                            <source src="{{ route('get.song', ['path' => $song->path]) }}" type="audio/mpeg">
-                        </audio><br>
-                        @include("includes.interaction")
-                    </article>
-                @endforeach
+                @if($results->count() == 0)
+                    <p>No search results</p>
+                @endif
+                        @foreach($genres as $genre)
+                            <input type="checkbox" checked="true" name="{{ $genre->name }}" value="{{ $genre->id }}"> {{ $genre->name }}<br>
+                        @endforeach
+                    <br>
+                    @foreach($results as $song)
+                            <article class="post">
+                                <p>Title: {{ $song->title }}</p>
+                                <audio controls>
+                                    <source src="{{ route('get.song', ['path' => $song->path]) }}" type="audio/mpeg">
+                                </audio><br>
+                                @include("includes.interaction")
+                            </article>
+                    @endforeach
+
             @endif
         </div>
     </section>

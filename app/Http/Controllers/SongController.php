@@ -32,12 +32,18 @@ class SongController extends Controller
     {
         $file = $request->file('song');
         $title = $request['title'];
-        $genre = $request['genre'];
+        $newGenre = $request['genre'];
         $filename = Auth::user()->name . "-" . $request['title'] . ".mp3";
         $user_id = Auth::user()->id;
-
+        $genre = DB::table('genres')->where('name', 'like', $newGenre)->get()->first();
         if($file){
-            DB::table('songs')->insert(['title' => $title, 'path' => $filename, 'user_id' => $user_id, 'genre' => $genre]);
+            if($genre != null){
+                DB::table('songs')->insert(['title' => $title, 'path' => $filename, 'user_id' => $user_id, 'genre_id' => $genre->id]);
+            } else {
+                DB::table('genres')->insert(['name' => $newGenre]);
+                $genre = DB::table('genres')->where('name', 'like', $newGenre)->get()->first();
+                DB::table('songs')->insert(['title' => $title, 'path' => $filename, 'user_id' => $user_id, 'genre_id' => $genre->id]);
+            }
             Storage::disk('local')->put($filename, File::get($file));
             return redirect()->route('dashboard')->with(['message', 'Song successfully uploaded!']);
         } else {
@@ -99,7 +105,7 @@ class SongController extends Controller
 
     public function getDashboard()
     {
-        $songs = Song::orderBy('created_at', 'desc')->get();
+        $songs = Song::all();
         return view('home', ['songs' => $songs]);
     }
 }
