@@ -6,11 +6,13 @@ use App\Song;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Post;
 use App\User;
+use Illuminate\Support\MessageBag;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class ProfileController extends Controller
 {
@@ -20,7 +22,8 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request){
         $this->validate($request, [
-            'name' => 'required|max:120'
+            'name' => 'required|max:120|alpha',
+            'email' => 'required|max:120'
         ]);
 
         $user = Auth::user();
@@ -32,7 +35,7 @@ class ProfileController extends Controller
         if($file){
             Storage::disk('local')->put($filename, File::get($file));
         }
-        return redirect()->route('profile');
+        return view('edit_profile', ['user' => Auth::user()])->with('message', 'Account updated!');
     }
 
     public function getProfileImage($filename){
@@ -44,9 +47,10 @@ class ProfileController extends Controller
         $posts = Post::orderBy('created_at', 'desc')->get();
         $songs = Song::orderBy('created_at', 'desc')->get();
         $user = User::where('id', $userid)->first();
+        $uploadCount = DB::table('songs')->where('user_id', 'like', Auth::user()->id)->count();
         if(!$user){
             abort(404);
         }
-        return view('profile', ['songs' => $songs, 'posts' => $posts])->with('user', $user);
+        return view('profile', ['songs' => $songs, 'posts' => $posts, 'uploadCount' => $uploadCount])->with('user', $user);
     }
 }

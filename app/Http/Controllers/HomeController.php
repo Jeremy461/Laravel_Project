@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Song;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,10 +24,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //$result = DB::table('users')->where('name', 'like', '%' . $input . '%')->get();
+
     public function index()
     {
+        $uploadCount = DB::table('songs')->where('user_id', 'like', Auth::user()->id)->count();
         $posts = Post::all();
         $songs = Song::all();
-        return view('home', ['posts' => $posts, 'songs' => $songs]);
+        return view('home', ['posts' => $posts, 'songs' => $songs, 'uploadCount' => $uploadCount]);
     }
 }

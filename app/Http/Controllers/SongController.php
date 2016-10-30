@@ -14,20 +14,6 @@ use Illuminate\Support\Facades\File;
 
 class SongController extends Controller
 {
-//    public function upload(Request $request)
-//    {
-//        $user = Auth::user();
-//
-//        $file = $request->file('song');
-//        $title = $request['title'];
-//        $filename = Auth::user()->name . '-' . $user->id . '.mp3';
-//
-//        if ($file) {
-//            Storage::disk('local')->put($filename, File::get($file));
-//        }
-//        return redirect()->route('dashboard')->with(['message', 'Song successfully uploaded!']);
-//    }
-
     public function upload(Request $request)
     {
         $file = $request->file('song');
@@ -49,7 +35,6 @@ class SongController extends Controller
         } else {
             dd("File not uploaded");
         }
-
     }
 
     public function getSong($path){
@@ -61,15 +46,15 @@ class SongController extends Controller
     {
         $song = Song::where('id', $song_id)->first();
 
-        if (DB::table('likes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->count() > 0) {
+        if (DB::table('likes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->count() > 0) {
             return redirect()->route('dashboard')->with(['message' => 'You have already liked this song!']);
         } else {
-            if (DB::table('dislikes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->count() > 0) {
-                DB::table('dislikes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->delete();
-                DB::table('likes')->insert(['user_id' => $song->user->id, 'song_id' => $song_id]);
+            if (DB::table('dislikes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->count() > 0) {
+                DB::table('dislikes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->delete();
+                DB::table('likes')->insert(['user_id' => Auth::user()->id, 'song_id' => $song_id]);
                 return redirect()->route('dashboard')->with(['message' => 'Successfully liked this song!']);
             } else {
-                DB::table('likes')->insert(['user_id' => $song->user->id, 'song_id' => $song_id]);
+                DB::table('likes')->insert(['user_id' => Auth::user()->id, 'song_id' => $song_id]);
                 return redirect()->route('dashboard')->with(['message' => 'Successfully liked this song!']);
             }
         }
@@ -79,15 +64,15 @@ class SongController extends Controller
     {
         $song = Song::where('id', $song_id)->first();
 
-        if (DB::table('dislikes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->count() > 0) {
+        if (DB::table('dislikes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->count() > 0) {
             return redirect()->route('dashboard')->with(['message' => 'You have already disliked this song!']);
         } else {
-            if (DB::table('likes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->count() > 0) {
-                DB::table('likes')->where([['user_id', '=', $song->user->id], ['song_id', '=', $song_id]])->delete();
-                DB::table('dislikes')->insert(['user_id' => $song->user->id, 'song_id' => $song_id]);
+            if (DB::table('likes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->count() > 0) {
+                DB::table('likes')->where([['user_id', '=', Auth::user()->id], ['song_id', '=', $song_id]])->delete();
+                DB::table('dislikes')->insert(['user_id' => Auth::user()->id, 'song_id' => $song_id]);
                 return redirect()->route('dashboard')->with(['message' => 'Successfully disliked this song!']);
             } else {
-                DB::table('dislikes')->insert(['user_id' => $song->user->id, 'song_id' => $song_id]);
+                DB::table('dislikes')->insert(['user_id' => Auth::user()->id, 'song_id' => $song_id]);
                 return redirect()->route('dashboard')->with(['message' => 'Successfully disliked this song!']);
             }
         }
